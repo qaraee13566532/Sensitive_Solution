@@ -653,19 +653,8 @@ void SensitiveScaleReadData( void )
 
 void UART2_Write( uint8_t byte)
 {
-    while(UART2_IsTxReady() == 0)
-    {
-    }
-
-    *txTail = byte;
-
-    txTail++;
-    
-    if (txTail == (txQueue + UART2_CONFIG_TX_BYTEQ_LENGTH))
-    {
-        txTail = txQueue;
-    }
-
+    Prn_Write_Buf[PrnOutputWrp]=byte;
+	PrnOutputWrp=rnginc(PrnOutputWrp,PRN_MAX_WRITE);     
     IEC1bits.U2TXIE = 1;
 }
 
